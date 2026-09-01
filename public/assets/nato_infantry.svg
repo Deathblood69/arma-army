@@ -4,5 +4,4 @@
     <path d="M 595,370 5,5"/>
     <path d="M 595,5 5,370"/>
   </g>
-  <path id="Friendly Frame" d="M 5,5 H 595 V 370 H 5 Z" style="fill:none;stroke:#0000ff;stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4"/>
 </svg>

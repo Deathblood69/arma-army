@@ -1,5 +1,8 @@
 import './App.css'
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Card,
   CardContent,
   createTheme,
@@ -12,6 +15,7 @@ import {
   Typography,
 } from '@mui/material'
 import { NATO, type Unit } from './data'
+import { ExpandMore } from '@mui/icons-material'
 
 const theme = createTheme({
   colorSchemes: {
@@ -19,44 +23,60 @@ const theme = createTheme({
   },
 })
 
-const army = NATO
-
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Grid container spacing={2} sx={{ p: 2 }}>
-        <Grid size={12}>
-          <Card>
-            <Stack
-              component={CardContent}
-              sx={{ justifyContent: 'center', alignItems: 'center' }}
-            >
-              <UnitName unit={army} />
-            </Stack>
-          </Card>
-        </Grid>
+      {NATO.subordinates?.map((unit) => (
+        <Accordion sx={{ p: 2 }}>
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Grid container>
+              <Grid size={12}>
+                <UnitName unit={unit} />
+              </Grid>
+            </Grid>
+          </AccordionSummary>
 
-        {army.subordinates?.map((subordinate, index) => (
-          <Grid key={index} size={{ xs: 2, sm: 3, md: 4 }}>
-            <Card>
-              <CardContent>
-                <UnitName unit={subordinate} colors={[army?.color]} />
-                <List>
-                  {subordinate.subordinates?.map((sub, subIndex) => (
-                    <ListItem key={subIndex}>
-                      <UnitName
-                        unit={sub}
-                        colors={[subordinate?.color, army?.color]}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+          <AccordionDetails>
+            <List>
+              <ListItem sx={{ border: '1px solid white' }}>
+                {unit.commander && (
+                  <UnitName unit={unit.commander} colors={[unit?.color]} />
+                )}
+              </ListItem>
+            </List>
+            <Grid container spacing={2}>
+              {unit.subordinates?.map((subordinate, index) => (
+                <Grid key={index} size={{ xs: 2, sm: 3, md: 4 }}>
+                  <Card sx={{ border: '1px solid white' }}>
+                    <CardContent>
+                      <UnitName unit={subordinate} colors={[unit?.color]} />
+                      <List>
+                        <ListItem>
+                          {subordinate.commander && (
+                            <UnitName
+                              unit={subordinate.commander}
+                              colors={[subordinate?.color, unit?.color]}
+                            />
+                          )}
+                        </ListItem>
+                        {subordinate.subordinates?.map((sub, subIndex) => (
+                          <ListItem key={subIndex}>
+                            <UnitName
+                              unit={sub}
+                              colors={[subordinate?.color, unit?.color]}
+                            />
+                          </ListItem>
+                        ))}
+                      </List>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </ThemeProvider>
   )
 }
