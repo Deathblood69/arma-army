@@ -1,5 +1,6 @@
-export const NATO: Unit = {
+const NATO: Unit = {
   name: 'NATO',
+  color: '#004990',
   subordinates: [
     {
       name: 'Infantry Brigade Combat Team',
@@ -111,6 +112,24 @@ export const NATO: Unit = {
   ],
 }
 
+const CSAT: Unit = {
+  name: 'CSAT',
+  color: '#700000',
+  subordinates: [],
+}
+
+const AAF: Unit = {
+  name: 'AAF',
+  color: '#00a731',
+  subordinates: [],
+}
+
+export const ARMIES: Record<ArmyType, Unit> = {
+  nato: NATO,
+  csat: CSAT,
+  aaf: AAF,
+}
+
 export type UnitType =
   | 'hq'
   | 'aviation'
@@ -135,3 +154,5 @@ export interface Unit {
   commander?: Unit
   subordinates?: Unit[]
 }
+
+export type ArmyType = 'nato' | 'csat' | 'aaf'
