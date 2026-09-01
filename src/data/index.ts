@@ -1,124 +1,153 @@
 const NATO: Unit = {
+  id: 'NATO',
   name: 'NATO',
   color: '#004990',
   subordinates: [
     {
+      id: 'IBCT',
       name: 'Infantry Brigade Combat Team',
       color: '#00ffff',
       type: 'infantry',
-      commander: { name: 'Headquarters & Headquarters Co.', color: '#ffffff' },
+      commander: {
+        id: 'HHC',
+        name: 'Headquarters & Headquarters Co.',
+        color: '#ffffff',
+      },
       subordinates: [
         {
+          id: 'BEB',
           name: 'Brigade Engineer Battalion',
           color: '#ffffff',
           type: 'hq',
-          commander: { name: 'Headquarters & Headquarters Co.' },
+          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
           subordinates: [
-            { name: 'Brigade Signal Co.', type: 'communication' },
-            { name: 'Military Intelligence Company' },
-            { name: 'Combat Engineer Co.', type: 'engineer' },
-            { name: 'Combat Engineer Co.', type: 'engineer' },
-            { name: 'Forward Support Co.', color: '#ff8000' },
+            { id: 'BSC', name: 'Brigade Signal Co.', type: 'communication' },
+            { id: 'MIC', name: 'Military Intelligence Company' },
+            { id: 'CEC', name: 'Combat Engineer Co.', type: 'engineer' },
+            { id: 'CEC', name: 'Combat Engineer Co.', type: 'engineer' },
+            { id: 'FSC', name: 'Forward Support Co.', color: '#ff8000' },
           ],
         },
         {
+          id: 'IB',
           name: 'Infantry Battalion',
           type: 'infantry',
-          commander: { name: 'Headquarters & Headquarters Co.' },
+          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
           subordinates: [
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Weapons Company', type: 'infantry' },
-            { name: 'Forward Support Co.', color: '#ff8000' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'WC', name: 'Weapons Company', type: 'infantry' },
+            { id: 'FSC', name: 'Forward Support Co.', color: '#ff8000' },
           ],
         },
         {
+          id: 'IB',
           name: 'Infantry Battalion',
           type: 'infantry',
-          commander: { name: 'Headquarters & Headquarters Co.' },
+          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
           subordinates: [
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Weapons Company', type: 'infantry' },
-            { name: 'Forward Support Co.', color: '#ff8000' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'WC', name: 'Weapons Company', type: 'infantry' },
+            { id: 'FSC', name: 'Forward Support Co.', color: '#ff8000' },
           ],
         },
         {
+          id: 'IB',
           name: 'Infantry Battalion',
           type: 'infantry',
-          commander: { name: 'Headquarters & Headquarters Co.' },
+          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
           subordinates: [
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Rifle Company', type: 'infantry' },
-            { name: 'Weapons Company', type: 'infantry' },
-            { name: 'Forward Support Co.', color: '#ff8000' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
+            { id: 'WC', name: 'Weapons Company', type: 'infantry' },
+            { id: 'FSC', name: 'Forward Support Co.', color: '#ff8000' },
           ],
         },
         {
+          id: 'CS',
           name: 'Cavalry Squadron',
           color: '#ffff00',
           type: 'recon',
-          commander: { name: 'Headquarters & Headquarters Troop.' },
+          commander: { id: 'HHC', name: 'Headquarters & Headquarters Troop.' },
           subordinates: [
-            { name: 'Motorized Cavalry Troop', type: 'recon' },
-            { name: 'Motorized Cavalry Troop', type: 'recon' },
-            { name: 'Dismounted Cavalry Troop', type: 'recon' },
-            { name: 'Forward Support Co.', color: '#ff8000' },
+            { id: 'MCT', name: 'Motorized Cavalry Troop', type: 'recon' },
+            { id: 'MCT', name: 'Motorized Cavalry Troop', type: 'recon' },
+            { id: 'MCT', name: 'Dismounted Cavalry Troop', type: 'recon' },
+            { id: 'MCT', name: 'Forward Support Co.', color: '#ff8000' },
           ],
         },
         {
+          id: 'FB',
           name: 'Fires Battalion',
           color: '#ff0000',
           type: 'artillery',
-          commander: { name: 'Headquarters & Headquarters Battery' },
+          commander: { id: 'HHC', name: 'Headquarters & Headquarters Battery' },
           subordinates: [
-            { name: 'Fires Battery', type: 'artillery' },
-            { name: 'Fires Battery', type: 'mortar' },
-            { name: 'Fires Battery', type: 'mortar' },
-            { name: 'Target Acquisition Platoon', type: 'radar' },
-            { name: 'Forward Support Co.', color: '#ff8000' },
+            { id: 'FB', name: 'Fires Battery', type: 'artillery' },
+            { id: 'FB', name: 'Fires Battery', type: 'mortar' },
+            { id: 'FB', name: 'Fires Battery', type: 'mortar' },
+            { id: 'FB', name: 'Target Acquisition Platoon', type: 'radar' },
+            { id: 'FB', name: 'Forward Support Co.', color: '#ff8000' },
           ],
         },
         {
+          id: 'BSB',
           name: 'Brigade Support Battalion',
           color: '#ff8000',
           type: 'hq',
-          commander: { name: 'Headquarters & Headquarters Co.' },
+          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
           subordinates: [
-            { name: 'Distribution Company', type: 'logistic' },
-            { name: 'Field Maintenance Company', type: 'maintenance' },
-            { name: 'Medical Company', type: 'medical' },
+            { id: 'DC', name: 'Distribution Company', type: 'logistic' },
+            {
+              id: 'FMC',
+              name: 'Field Maintenance Company',
+              type: 'maintenance',
+            },
+            { id: 'MC', name: 'Medical Company', type: 'medical' },
           ],
         },
       ],
     },
     {
+      id: 'HBCT',
       name: 'Heavy Brigade Combat Team',
       color: '#00ffff',
       type: 'mechanized_infantry',
-      commander: { name: 'Headquarters & Headquarters Co.', color: '#ffffff' },
+      commander: {
+        id: 'HHC',
+        name: 'Headquarters & Headquarters Co.',
+        color: '#ffffff',
+      },
       subordinates: [],
     },
     {
+      id: 'BCT',
       name: 'Brigade Combat Team',
       color: '#00ffff',
       type: 'aviation',
-      commander: { name: 'Headquarters & Headquarters Co.', color: '#ffffff' },
+      commander: {
+        id: 'HHC',
+        name: 'Headquarters & Headquarters Co.',
+        color: '#ffffff',
+      },
       subordinates: [],
     },
   ],
 }
 
 const CSAT: Unit = {
+  id: 'CSAT',
   name: 'CSAT',
   color: '#700000',
   subordinates: [],
 }
 
 const AAF: Unit = {
+  id: 'AAF',
   name: 'AAF',
   color: '#00a731',
   subordinates: [],
@@ -147,7 +176,11 @@ export type UnitType =
   | 'radar'
   | 'recon'
 
-export interface Unit {
+interface AbstractEntity {
+  id: string
+}
+
+export interface Unit extends AbstractEntity {
   name: string
   color?: string
   type?: UnitType

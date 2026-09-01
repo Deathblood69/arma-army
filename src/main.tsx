@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router'
 import RootLayout from './layouts/RootLayout.tsx'
 import Home from './ui/Home.tsx'
 import ArmyOrg from './ui/ArmyOrg.tsx'
+import CompanyOrg from './ui/CompanyOrg.tsx'
+import BattalionOrg from './ui/BattalionOrg.tsx'
 
 const router = createBrowserRouter([
   {
@@ -11,7 +13,14 @@ const router = createBrowserRouter([
     Component: RootLayout,
     children: [
       { index: true, Component: Home },
-      { path: ':army', Component: ArmyOrg },
+      {
+        path: ':army',
+        children: [
+          { index: true, Component: ArmyOrg },
+          { path: ':brigade/:battalion', Component: BattalionOrg },
+          { path: ':brigade/:battalion/:company', Component: CompanyOrg },
+        ],
+      },
     ],
   },
 ])

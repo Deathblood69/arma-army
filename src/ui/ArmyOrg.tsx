@@ -7,17 +7,25 @@ import {
   Grid,
   List,
   ListItem,
+  ListItemButton,
   Stack,
   Typography,
 } from '@mui/material'
 import { ARMIES, type ArmyType, type Unit } from '../data'
 import { ExpandMore } from '@mui/icons-material'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
 export default function ArmyOrg() {
+  const navigate = useNavigate()
+
   const params = useParams()
 
-  const army = params.army as ArmyType
+  const side = params.army as ArmyType
+
+  function handleClick(units: string[]) {
+    const newPath = units.join('/').toLowerCase()
+    navigate(newPath)
+  }
 
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
@@ -27,20 +35,20 @@ export default function ArmyOrg() {
           sx={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}
         >
           <img
-            src={`/assets/flag_${army}.png`}
+            src={`/assets/flag_${side}.png`}
             alt="NATO"
             style={{ maxWidth: '100%', height: 'auto' }}
           />
-          <Typography variant="h4">{ARMIES[army].name}</Typography>
+          <Typography variant="h4">{ARMIES[side].name}</Typography>
         </Stack>
       </Grid>
       <Grid size={12}>
-        {ARMIES[army].subordinates?.map((unit) => (
+        {ARMIES[side].subordinates?.map((army) => (
           <Accordion sx={{ p: 2 }}>
             <AccordionSummary expandIcon={<ExpandMore />}>
               <Grid container>
                 <Grid size={12}>
-                  <UnitName unit={unit} />
+                  <UnitName unit={army} />
                 </Grid>
               </Grid>
             </AccordionSummary>
@@ -48,32 +56,57 @@ export default function ArmyOrg() {
             <AccordionDetails>
               <List>
                 <ListItem sx={{ border: '1px solid white' }}>
-                  {unit.commander && (
-                    <UnitName unit={unit.commander} colors={[unit?.color]} />
+                  {army.commander && (
+                    <UnitName unit={army.commander} colors={[army?.color]} />
                   )}
                 </ListItem>
               </List>
               <Grid container spacing={2}>
-                {unit.subordinates?.map((subordinate, index) => (
+                {army.subordinates?.map((battalion, index) => (
                   <Grid key={index} size={{ xs: 2, sm: 3, md: 4 }}>
                     <Card sx={{ border: '1px solid white' }}>
                       <CardContent>
-                        <UnitName unit={subordinate} colors={[unit?.color]} />
+                        <ListItemButton
+                          onClick={() => handleClick([army.id, battalion.id])}
+                        >
+                          <UnitName unit={battalion} colors={[army?.color]} />
+                        </ListItemButton>
                         <List>
-                          <ListItem>
-                            {subordinate.commander && (
-                              <UnitName
-                                unit={subordinate.commander}
-                                colors={[subordinate?.color, unit?.color]}
-                              />
-                            )}
-                          </ListItem>
-                          {subordinate.subordinates?.map((sub, subIndex) => (
+                          {battalion.commander && (
+                            <ListItem>
+                              <ListItemButton
+                                onClick={() =>
+                                  battalion.commander &&
+                                  handleClick([
+                                    army.id,
+                                    battalion.id,
+                                    battalion.commander.id,
+                                  ])
+                                }
+                              >
+                                <UnitName
+                                  unit={battalion.commander}
+                                  colors={[battalion?.color, army?.color]}
+                                />
+                              </ListItemButton>
+                            </ListItem>
+                          )}
+                          {battalion.subordinates?.map((company, subIndex) => (
                             <ListItem key={subIndex}>
-                              <UnitName
-                                unit={sub}
-                                colors={[subordinate?.color, unit?.color]}
-                              />
+                              <ListItemButton
+                                onClick={() =>
+                                  handleClick([
+                                    army.id,
+                                    battalion.id,
+                                    company.id,
+                                  ])
+                                }
+                              >
+                                <UnitName
+                                  unit={company}
+                                  colors={[company?.color, army?.color]}
+                                />
+                              </ListItemButton>
                             </ListItem>
                           ))}
                         </List>
@@ -103,7 +136,14 @@ function UnitName({ unit, colors }: UnitNameProps) {
   const icon = `/assets/nato_${unit.type}.svg`
 
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack
+      direction="row"
+      sx={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+      spacing={2}
+    >
       <Stack
         sx={{
           width: 60,
