@@ -1,121 +1,101 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
+import {
+  Card,
+  CardContent,
+  createTheme,
+  CssBaseline,
+  Grid,
+  List,
+  ListItem,
+  Stack,
+  ThemeProvider,
+  Typography,
+} from '@mui/material'
+import { NATO, type Unit } from './data'
+
+const theme = createTheme({
+  colorSchemes: {
+    dark: true,
+  },
+})
+
+const army = NATO
 
 function App() {
-  const [count, setCount] = useState(0)
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Grid container spacing={2} sx={{ p: 2 }}>
+        <Grid size={12}>
+          <Card>
+            <Stack
+              component={CardContent}
+              sx={{ justifyContent: 'center', alignItems: 'center' }}
+            >
+              <UnitName unit={army} />
+            </Stack>
+          </Card>
+        </Grid>
+
+        {army.subordinates?.map((subordinate, index) => (
+          <Grid key={index} size={{ xs: 2, sm: 3, md: 4 }}>
+            <Card>
+              <CardContent>
+                <UnitName unit={subordinate} colors={[army?.color]} />
+                <List>
+                  {subordinate.subordinates?.map((sub, subIndex) => (
+                    <ListItem key={subIndex}>
+                      <UnitName
+                        unit={sub}
+                        colors={[subordinate?.color, army?.color]}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </ThemeProvider>
+  )
+}
+
+interface UnitNameProps {
+  unit: Unit
+  colors?: (string | undefined)[]
+}
+
+function UnitName({ unit, colors }: UnitNameProps) {
+  const shortName = unit.name.replaceAll(/[^A-Z]/g, '')
+  const backgroundColor =
+    unit.color ?? colors?.find((color) => color !== undefined)
+
+  const icon = `/assets/nato_${unit.type}.svg`
+  console.log(unit.name, unit.type, icon)
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <Stack direction="row" spacing={2}>
+      <Stack
+        sx={{
+          width: 60,
+          height: 30,
+          ...(backgroundColor && {
+            backgroundColor,
+          }),
+          color: 'black',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {unit.type && unit.type !== 'hq' ? (
+          <img src={icon} alt={unit.type} style={{ width: 60, height: 30 }} />
+        ) : (
+          shortName
+        )}
+      </Stack>
+      <Typography>{unit.name}</Typography>
+    </Stack>
   )
 }
 
