@@ -7,6 +7,7 @@ import ArmyOrg from "./ui/ArmyOrg.tsx";
 import BattalionOrg from "./ui/BattalionOrg.tsx";
 import CompanyOrg from "./ui/CompanyOrg.tsx";
 import BrigadeOrg from "./ui/BrigadeOrg.tsx";
+import SectionOrg from "./ui/SectionOrg.tsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
           { path: ":brigade", Component: BrigadeOrg },
           { path: ":brigade/:battalion", Component: BattalionOrg },
           { path: ":brigade/:battalion/:company", Component: CompanyOrg },
+          {
+            path: ":brigade/:battalion/:company/:section",
+            Component: SectionOrg,
+          },
         ],
       },
     ],

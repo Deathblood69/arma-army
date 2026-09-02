@@ -14,22 +14,29 @@ import {
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import UnitName from "./UnitName.tsx";
-import useBattalion from "../hooks/useBattalion.ts";
+import useSection from "../hooks/useSection.ts";
 
-export default function BattalionOrg() {
+export default function SectionOrg() {
   const navigate = useNavigate();
 
   const params = useParams();
 
-  const { army, brigade, battalion } = useBattalion(
+  const { army, brigade, battalion, company, section } = useSection(
     params.army,
     params.brigade,
     params.battalion,
+    params.company,
+    params.section,
   );
 
   const shortName = battalion.name.replaceAll(/[^A-Z]/g, "");
 
-  const inheritedColors = [battalion?.color, brigade?.color, army.color];
+  const inheritedColors = [
+    company?.color,
+    battalion?.color,
+    brigade?.color,
+    army.color,
+  ];
 
   const backgroundColor = inheritedColors.find((color) => color !== undefined);
   const icon = `/assets/nato_${battalion.type}.svg`;
@@ -62,10 +69,10 @@ export default function BattalionOrg() {
               alignItems: "center",
             }}
           >
-            {battalion.type && battalion.type !== "hq" ? (
+            {section.type && section.type !== "hq" ? (
               <img
                 src={icon}
-                alt={battalion.type}
+                alt={section.type}
                 style={{
                   width: 600,
                   height: 400,
@@ -75,28 +82,25 @@ export default function BattalionOrg() {
               shortName
             )}
           </Stack>
-          <Typography variant="h4">{battalion.name}</Typography>
+          <Typography variant="h4">{section.name}</Typography>
         </Stack>
       </Grid>
       <Grid size={12}>
-        {battalion.commander && (
+        {section.commander && (
           <Accordion sx={{ p: 2 }} defaultExpanded={true}>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Grid container sx={{ width: "100%" }}>
-                <Grid size={"auto"}>
-                  <UnitName
-                    unit={battalion.commander}
-                    colors={inheritedColors}
-                  />
+              <Grid container>
+                <Grid size={12}>
+                  <UnitName unit={section.commander} colors={inheritedColors} />
                 </Grid>
               </Grid>
             </AccordionSummary>
             <AccordionDetails>
               <List>
                 <ListItem sx={{ border: "1px solid white" }}>
-                  {battalion.commander.commander && (
+                  {section.commander.commander && (
                     <UnitName
-                      unit={battalion.commander.commander}
+                      unit={section.commander.commander}
                       colors={[battalion?.color, ...inheritedColors]}
                     />
                   )}
@@ -105,19 +109,14 @@ export default function BattalionOrg() {
             </AccordionDetails>
           </Accordion>
         )}
-        {battalion.subordinates?.map((company) => (
+        {section.subordinates?.map((company) => (
           <Accordion key={company.id} sx={{ p: 2 }}>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Grid container sx={{ width: "100%" }}>
-                <Grid size={"auto"}>
+              <Grid container>
+                <Grid size={12}>
                   <UnitName unit={company} colors={inheritedColors} />
                 </Grid>
               </Grid>
-              {/*<Stack direction={"row"} sx={{ justifyContent: "flex-end" }}>*/}
-              {/*  <IconButton onClick={() => handleClick([company.id])}>*/}
-              {/*    <Launch />*/}
-              {/*  </IconButton>*/}
-              {/*</Stack>*/}
             </AccordionSummary>
 
             <AccordionDetails>
@@ -172,11 +171,7 @@ export default function BattalionOrg() {
                             <ListItem key={subIndex} sx={{ pr: 0 }}>
                               <ListItemButton
                                 onClick={() =>
-                                  handleClick([
-                                    company.id,
-                                    section.id,
-                                    squad.id,
-                                  ])
+                                  handleClick([squad.id, section.id, squad.id])
                                 }
                               >
                                 <UnitName

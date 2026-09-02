@@ -10,7 +10,7 @@ export default class CommandUnit extends Unit {
   constructor({ id, name }: CommandUnitDTO) {
     const commander = new Unit({
       id: `${id}`,
-      name: "Battalion Command",
+      name: "Command",
     });
 
     const subordinates: Unit[] = [];

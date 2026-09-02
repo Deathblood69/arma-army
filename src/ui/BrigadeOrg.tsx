@@ -6,14 +6,13 @@ import {
   Card,
   CardContent,
   Grid,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
   Stack,
   Typography,
 } from "@mui/material";
-import { ExpandMore, Launch } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import UnitName from "./UnitName.tsx";
 import useBrigade from "../hooks/useBrigade.ts";
 
@@ -107,11 +106,11 @@ export default function BrigadeOrg() {
                   <UnitName unit={battalion} colors={inheritedColors} />
                 </Grid>
               </Grid>
-              <Stack direction={"row"} sx={{ justifyContent: "flex-end" }}>
-                <IconButton onClick={() => handleClick([battalion.id])}>
-                  <Launch />
-                </IconButton>
-              </Stack>
+              {/*<Stack direction={"row"} sx={{ justifyContent: "flex-end" }}>*/}
+              {/*  <IconButton onClick={() => handleClick([battalion.id])}>*/}
+              {/*    <Launch />*/}
+              {/*  </IconButton>*/}
+              {/*</Stack>*/}
             </AccordionSummary>
 
             <AccordionDetails>

@@ -1,5 +1,5 @@
 import { Unit } from "./Unit.ts";
-import type { UnitType } from "../data";
+import { NUMBER_PARTICULE, type UnitType } from "../data";
 import CommandUnit from "./CommandUnit.ts";
 
 export interface BrigadeDTO {
@@ -19,7 +19,11 @@ export default class Brigade extends Unit {
     const newSubordinates: Unit[] = [];
     subordinates.map((subordinate) => {
       for (let i = 0; i < subordinate.count; i++) {
-        newSubordinates.push(subordinate.unit);
+        newSubordinates.push({
+          ...subordinate.unit,
+          id: `${subordinate.unit.id}-${i + 1}`,
+          name: `${i + 1}${NUMBER_PARTICULE[i] ?? NUMBER_PARTICULE[NUMBER_PARTICULE.length - 1]} ${subordinate.unit.name}`,
+        });
       }
     });
 

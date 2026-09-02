@@ -55,11 +55,11 @@ export default function ArmyOrg() {
                   />
                 </Grid>
               </Grid>
-              <Stack direction={"row"} sx={{ justifyContent: "flex-end" }}>
-                <IconButton onClick={() => handleClick([brigade.id])}>
-                  <Launch />
-                </IconButton>
-              </Stack>
+              {/*<Stack direction={"row"} sx={{ justifyContent: "flex-end" }}>*/}
+              {/*  <IconButton onClick={() => handleClick([brigade.id])}>*/}
+              {/*    <Launch />*/}
+              {/*  </IconButton>*/}
+              {/*</Stack>*/}
             </AccordionSummary>
 
             <AccordionDetails>

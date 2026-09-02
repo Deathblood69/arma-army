@@ -6,6 +6,8 @@ import ArtilleryBattalion from "../entities/ArtilleryBattalion.ts";
 import SupportBattalion from "../entities/SupportBattalion.ts";
 import Brigade from "../entities/Brigade.ts";
 
+export const NUMBER_PARTICULE = ["st", "nd", "rd", "th"];
+
 const NATO: Unit = {
   id: "NATO",
   name: "NATO",
@@ -25,7 +27,7 @@ const NATO: Unit = {
         },
         {
           unit: new InfantryBattalion({
-            id: "IB1",
+            id: "IB",
             name: "Infantry Battalion",
           }),
           count: 3,
