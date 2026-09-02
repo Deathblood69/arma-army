@@ -1,5 +1,6 @@
 import { Unit } from "./Unit.ts";
 import type { UnitType } from "../data";
+import CommandUnit from "./CommandUnit.ts";
 
 export interface BrigadeDTO {
   id?: string;
@@ -10,10 +11,9 @@ export interface BrigadeDTO {
 
 export default class Brigade extends Unit {
   constructor({ id, name, type, subordinates }: BrigadeDTO) {
-    const commander = new Unit({
-      id: "HHC",
+    const commander = new CommandUnit({
+      id: "Sierra",
       name: "Headquarters & Headquarters Co.",
-      color: "#ffffff",
     });
 
     const newSubordinates: Unit[] = [];
