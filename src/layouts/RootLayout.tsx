@@ -1,11 +1,11 @@
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import { Outlet } from 'react-router'
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { Outlet } from "react-router";
 
 const theme = createTheme({
   colorSchemes: {
     dark: true,
   },
-})
+});
 
 export default function RootLayout() {
   return (
@@ -13,5 +13,5 @@ export default function RootLayout() {
       <CssBaseline />
       <Outlet />
     </ThemeProvider>
-  )
+  );
 }

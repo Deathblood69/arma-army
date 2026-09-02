@@ -1,46 +1,60 @@
-import { Stack, Typography } from '@mui/material'
-import type { Unit } from '../data'
+import { Chip, Grid, Stack, Typography } from "@mui/material";
+import { Unit } from "../entities/Unit.ts";
 
 interface UnitNameProps {
-  unit: Unit
-  colors?: (string | undefined)[]
+  unit: Unit;
+  colors?: (string | undefined)[];
 }
 
 export default function UnitName({ unit, colors }: UnitNameProps) {
-  const shortName = unit.name.replaceAll(/[^A-Z]/g, '')
+  const shortName = unit.name.replaceAll(/[^A-Z]/g, "");
   const backgroundColor =
-    unit.color ?? colors?.find((color) => color !== undefined)
+    unit.color ?? colors?.find((color) => color !== undefined);
 
-  const icon = `/assets/nato_${unit.type}.svg`
+  const icon = `/assets/nato_${unit.type}.svg`;
 
   return (
     <Stack
       direction="row"
       sx={{
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: "100%",
       }}
       spacing={2}
     >
-      <Stack
-        sx={{
-          width: 60,
-          height: 30,
-          ...(backgroundColor && {
-            backgroundColor,
-          }),
-          color: 'black',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+      <Grid
+        container
+        spacing={2}
+        sx={{ justifyContent: "space-between", alignItems: "center" }}
       >
-        {unit.type && unit.type !== 'hq' ? (
-          <img src={icon} alt={unit.type} style={{ width: 60, height: 30 }} />
-        ) : (
-          shortName
-        )}
+        <Grid
+          size={"auto"}
+          sx={{
+            width: 60,
+            height: 30,
+            ...(backgroundColor && {
+              backgroundColor,
+            }),
+            color: "black",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {unit.type && unit.type !== "hq" ? (
+            <img src={icon} alt={unit.type} style={{ width: 60, height: 30 }} />
+          ) : (
+            shortName
+          )}
+        </Grid>
+        <Grid>
+          <Typography>{unit.name}</Typography>
+        </Grid>
+      </Grid>
+      <Stack direction={"row"}>
+        <Chip label={unit?.id} />
       </Stack>
-      <Typography>{unit.name}</Typography>
     </Stack>
-  )
+  );
 }

@@ -5,109 +5,136 @@ import {
   Card,
   CardContent,
   Grid,
+  IconButton,
   List,
   ListItem,
-  ListItemButton,
   Stack,
   Typography,
-} from '@mui/material'
-import { ARMIES, type ArmyType } from '../data'
-import { ExpandMore } from '@mui/icons-material'
-import { useNavigate, useParams } from 'react-router'
-import UnitName from './UnitName.tsx'
+} from "@mui/material";
+import { ExpandMore, Launch } from "@mui/icons-material";
+import { useNavigate, useParams } from "react-router";
+import UnitName from "./UnitName.tsx";
+import useArmy from "../hooks/useArmy.ts";
 
 export default function ArmyOrg() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const params = useParams()
+  const params = useParams();
 
-  const side = params.army as ArmyType
+  const { army, side } = useArmy(params.army);
 
   function handleClick(units: string[]) {
-    const newPath = units.join('/').toLowerCase()
-    navigate(newPath)
+    const newPath = units.join("/").toLowerCase();
+    navigate(newPath);
   }
 
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
-      <Grid sx={{ width: '100%' }}>
+      <Grid sx={{ width: "100%" }}>
         <Stack
           spacing={2}
-          sx={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}
+          sx={{ justifyContent: "center", alignItems: "center", width: "100%" }}
         >
           <img
             src={`/assets/flag_${side}.png`}
             alt="NATO"
-            style={{ maxWidth: '100%', height: 'auto' }}
+            style={{ maxWidth: "100%", height: "auto" }}
           />
-          <Typography variant="h4">{ARMIES[side].name}</Typography>
+          <Typography variant="h4">{army.name}</Typography>
         </Stack>
       </Grid>
       <Grid size={12}>
-        {ARMIES[side].subordinates?.map((army) => (
-          <Accordion sx={{ p: 2 }}>
+        {army.subordinates?.map((brigade) => (
+          <Accordion key={brigade.id} sx={{ p: 2 }}>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Grid container>
-                <Grid size={12}>
-                  <UnitName unit={army} />
+              <Grid container sx={{ width: "100%" }}>
+                <Grid size={"auto"}>
+                  <UnitName
+                    unit={brigade}
+                    colors={[brigade?.color, army.color]}
+                  />
                 </Grid>
               </Grid>
+              <Stack direction={"row"} sx={{ justifyContent: "flex-end" }}>
+                <IconButton onClick={() => handleClick([brigade.id])}>
+                  <Launch />
+                </IconButton>
+              </Stack>
             </AccordionSummary>
 
             <AccordionDetails>
               <List>
-                <ListItem sx={{ border: '1px solid white' }}>
-                  {army.commander && (
-                    <UnitName unit={army.commander} colors={[army?.color]} />
+                <ListItem sx={{ border: "1px solid white" }}>
+                  {brigade.commander && (
+                    <UnitName
+                      unit={brigade.commander}
+                      colors={[brigade?.color, army.color]}
+                    />
                   )}
                 </ListItem>
               </List>
-              <Grid container spacing={2}>
-                {army.subordinates?.map((battalion, index) => (
+              <Grid container spacing={2} sx={{ pt: 2 }}>
+                {brigade.subordinates?.map((battalion, index) => (
                   <Grid key={index} size={{ xs: 2, sm: 3, md: 4 }}>
-                    <Card sx={{ border: '1px solid white' }}>
+                    <Card sx={{ border: "1px solid white", height: "100%" }}>
                       <CardContent>
-                        <ListItemButton
-                          onClick={() => handleClick([army.id, battalion.id])}
-                        >
-                          <UnitName unit={battalion} colors={[army?.color]} />
-                        </ListItemButton>
+                        <Stack direction={"row"}>
+                          <UnitName
+                            unit={battalion}
+                            colors={[brigade?.color, army.color]}
+                          />
+
+                          <IconButton
+                            onClick={() =>
+                              handleClick([brigade.id, battalion.id])
+                            }
+                          >
+                            <Launch />
+                          </IconButton>
+                        </Stack>
                         <List>
                           {battalion.commander && (
-                            <ListItem>
-                              <ListItemButton
+                            <ListItem sx={{ pr: 0 }}>
+                              <UnitName
+                                unit={battalion.commander}
+                                colors={[
+                                  brigade?.color,
+                                  battalion?.color,
+                                  army.color,
+                                ]}
+                              />
+                              <IconButton
                                 onClick={() =>
                                   battalion.commander &&
-                                  handleClick([
-                                    army.id,
-                                    battalion.id,
-                                    battalion.commander.id,
-                                  ])
+                                  handleClick([brigade.id, battalion.id])
                                 }
                               >
-                                <UnitName
-                                  unit={battalion.commander}
-                                  colors={[battalion?.color, army?.color]}
-                                />
-                              </ListItemButton>
+                                <Launch />
+                              </IconButton>
                             </ListItem>
                           )}
                           {battalion.subordinates?.map((company, subIndex) => (
-                            <ListItem key={subIndex}>
-                              <ListItemButton
+                            <ListItem key={subIndex} sx={{ pr: 0 }}>
+                              <UnitName
+                                unit={company}
+                                colors={[
+                                  company?.color,
+                                  brigade?.color,
+                                  battalion?.color,
+                                  army.color,
+                                ]}
+                              />
+                              <IconButton
                                 onClick={() =>
                                   handleClick([
-                                    army.id,
+                                    brigade.id,
                                     battalion.id,
                                     company.id,
                                   ])
                                 }
                               >
-                                <UnitName
-                                  unit={company}
-                                  colors={[company?.color, army?.color]}
-                                />
-                              </ListItemButton>
+                                <Launch />
+                              </IconButton>
                             </ListItem>
                           ))}
                         </List>
@@ -121,5 +148,5 @@ export default function ArmyOrg() {
         ))}
       </Grid>
     </Grid>
-  )
+  );
 }

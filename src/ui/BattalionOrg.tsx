@@ -1,6 +1,4 @@
-import { Fragment } from 'react'
-import { useNavigate, useParams } from 'react-router'
-import { ARMIES, type ArmyType } from '../data'
+import { useNavigate, useParams } from "react-router";
 import {
   Accordion,
   AccordionDetails,
@@ -8,66 +6,49 @@ import {
   Card,
   CardContent,
   Grid,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
   Stack,
   Typography,
-} from '@mui/material'
-import { ExpandMore } from '@mui/icons-material'
-import UnitName from './UnitName.tsx'
+} from "@mui/material";
+import { ExpandMore, Launch } from "@mui/icons-material";
+import UnitName from "./UnitName.tsx";
+import useBattalion from "../hooks/useBattalion.ts";
 
 export default function BattalionOrg() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const params = useParams()
+  const params = useParams();
 
-  const side = params.army as ArmyType
-  const brigade = params.brigade
-  const battalion = params.battalion
+  const { army, brigade, battalion } = useBattalion(
+    params.army,
+    params.brigade,
+    params.battalion,
+  );
 
-  const selectedArmy = ARMIES[side]
+  const shortName = battalion.name.replaceAll(/[^A-Z]/g, "");
 
-  const selectedBrigade = selectedArmy.subordinates?.find((subordinate) => {
-    return subordinate.id.toLowerCase() === brigade
-  })
+  const inheritedColors = [battalion?.color, brigade?.color, army.color];
 
-  if (!selectedBrigade) {
-    return <Fragment />
-  }
-
-  const selectedBattalion = selectedBrigade?.subordinates?.find(
-    (subordinate) => {
-      return subordinate.id.toLowerCase() === battalion
-    },
-  )
-
-  if (!selectedBattalion) {
-    return <Fragment />
-  }
-
-  const shortName = selectedBattalion.name.replaceAll(/[^A-Z]/g, '')
-  const inheritedColors = [
-    selectedBattalion?.color,
-    selectedBrigade?.color,
-    selectedArmy.color,
-  ]
-  const backgroundColor = inheritedColors.find((color) => color !== undefined)
+  const backgroundColor = inheritedColors.find((color) => color !== undefined);
+  const icon = `/assets/nato_${battalion.type}.svg`;
 
   function handleClick(units: string[]) {
-    const newPath = units.join('/').toLowerCase()
-    navigate(newPath)
+    const newPath = units.join("/").toLowerCase();
+    navigate(newPath);
   }
 
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
-      <Grid sx={{ width: '100%' }}>
+      <Grid sx={{ width: "100%" }}>
         <Stack
           spacing={2}
           sx={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
           }}
         >
           <Stack
@@ -77,44 +58,72 @@ export default function BattalionOrg() {
               ...(backgroundColor && {
                 backgroundColor,
               }),
-              color: 'black',
-              justifyContent: 'center',
-              alignItems: 'center',
+              color: "black",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            {shortName}
+            {battalion.type && battalion.type !== "hq" ? (
+              <img
+                src={icon}
+                alt={battalion.type}
+                style={{
+                  width: 600,
+                  height: 400,
+                }}
+              />
+            ) : (
+              shortName
+            )}
           </Stack>
-          <Typography variant="h4">{selectedBattalion.name}</Typography>
+          <Typography variant="h4">{battalion.name}</Typography>
         </Stack>
       </Grid>
       <Grid size={12}>
-        {selectedBattalion.commander && (
-          <Accordion sx={{ p: 2 }}>
+        {battalion.commander && (
+          <Accordion sx={{ p: 2 }} defaultExpanded={true}>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Grid container>
-                <Grid size={12}>
+              <Grid container sx={{ width: "100%" }}>
+                <Grid size={"auto"}>
                   <UnitName
-                    unit={selectedBattalion.commander}
+                    unit={battalion.commander}
                     colors={inheritedColors}
                   />
                 </Grid>
               </Grid>
             </AccordionSummary>
+            <AccordionDetails>
+              <List>
+                <ListItem sx={{ border: "1px solid white" }}>
+                  {battalion.commander.commander && (
+                    <UnitName
+                      unit={battalion.commander.commander}
+                      colors={[battalion?.color, ...inheritedColors]}
+                    />
+                  )}
+                </ListItem>
+              </List>
+            </AccordionDetails>
           </Accordion>
         )}
-        {selectedBattalion.subordinates?.map((company) => (
-          <Accordion sx={{ p: 2 }}>
+        {battalion.subordinates?.map((company) => (
+          <Accordion key={company.id} sx={{ p: 2 }}>
             <AccordionSummary expandIcon={<ExpandMore />}>
               <Grid container>
-                <Grid size={12}>
+                <Grid size={"auto"}>
                   <UnitName unit={company} colors={inheritedColors} />
                 </Grid>
               </Grid>
+              <Stack direction={"row"} sx={{ justifyContent: "flex-end" }}>
+                <IconButton onClick={() => handleClick([company.id])}>
+                  <Launch />
+                </IconButton>
+              </Stack>
             </AccordionSummary>
 
             <AccordionDetails>
               <List>
-                <ListItem sx={{ border: '1px solid white' }}>
+                <ListItem sx={{ border: "1px solid white" }}>
                   {company.commander && (
                     <UnitName
                       unit={company.commander}
@@ -123,36 +132,36 @@ export default function BattalionOrg() {
                   )}
                 </ListItem>
               </List>
-              <Grid container spacing={2}>
-                {company.subordinates?.map((squad, index) => (
+              <Grid container spacing={2} sx={{ pt: 2 }}>
+                {company.subordinates?.map((section, index) => (
                   <Grid key={index} size={{ xs: 2, sm: 3, md: 4 }}>
-                    <Card sx={{ border: '1px solid white' }}>
+                    <Card sx={{ border: "1px solid white" }}>
                       <CardContent>
                         <ListItemButton
-                          onClick={() => handleClick([company.id, squad.id])}
+                          onClick={() => handleClick([company.id, section.id])}
                         >
                           <UnitName
-                            unit={squad}
+                            unit={section}
                             colors={[company?.color, ...inheritedColors]}
                           />
                         </ListItemButton>
                         <List>
-                          {squad.commander && (
-                            <ListItem>
+                          {section.commander && (
+                            <ListItem sx={{ pr: 0 }}>
                               <ListItemButton
                                 onClick={() =>
-                                  squad.commander &&
+                                  section.commander &&
                                   handleClick([
                                     company.id,
-                                    squad.id,
-                                    squad.commander.id,
+                                    section.id,
+                                    section.commander.id,
                                   ])
                                 }
                               >
                                 <UnitName
-                                  unit={squad.commander}
+                                  unit={section.commander}
                                   colors={[
-                                    squad?.color,
+                                    section?.color,
                                     company?.color,
                                     ...inheritedColors,
                                   ]}
@@ -160,22 +169,18 @@ export default function BattalionOrg() {
                               </ListItemButton>
                             </ListItem>
                           )}
-                          {squad.subordinates?.map((soldier, subIndex) => (
-                            <ListItem key={subIndex}>
+                          {section.subordinates?.map((squad, subIndex) => (
+                            <ListItem key={subIndex} sx={{ pr: 0 }}>
                               <ListItemButton
                                 onClick={() =>
-                                  handleClick([
-                                    soldier.id,
-                                    squad.id,
-                                    soldier.id,
-                                  ])
+                                  handleClick([squad.id, section.id, squad.id])
                                 }
                               >
                                 <UnitName
-                                  unit={soldier}
+                                  unit={squad}
                                   colors={[
-                                    soldier?.color,
                                     squad?.color,
+                                    section?.color,
                                     company?.color,
                                     ...inheritedColors,
                                   ]}
@@ -194,5 +199,5 @@ export default function BattalionOrg() {
         ))}
       </Grid>
     </Grid>
-  )
+  );
 }

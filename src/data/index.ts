@@ -1,191 +1,137 @@
+import { Unit } from "../entities/Unit.ts";
+import InfantryBattalion from "../entities/InfantryBattalion.ts";
+import EngineerBattalion from "../entities/EngineerBattalion.ts";
+import CavalrySquadron from "../entities/CavalrySquadron.ts";
+import ArtilleryBattalion from "../entities/ArtilleryBattalion.ts";
+import SupportBattalion from "../entities/SupportBattalion.ts";
+import Brigade from "../entities/Brigade.ts";
+
 const NATO: Unit = {
-  id: 'NATO',
-  name: 'NATO',
-  color: '#004990',
+  id: "NATO",
+  name: "NATO",
+  color: "#004990",
   subordinates: [
-    {
-      id: 'IBCT',
-      name: 'Infantry Brigade Combat Team',
-      color: '#00ffff',
-      type: 'infantry',
-      commander: {
-        id: 'HHC',
-        name: 'Headquarters & Headquarters Co.',
-        color: '#ffffff',
-      },
+    new Brigade({
+      id: "IBCT",
+      name: "Infantry Brigade Combat Team",
+      type: "infantry",
       subordinates: [
         {
-          id: 'BEB',
-          name: 'Brigade Engineer Battalion',
-          color: '#ffffff',
-          type: 'hq',
-          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
-          subordinates: [
-            { id: 'BSC', name: 'Brigade Signal Co.', type: 'communication' },
-            { id: 'MIC', name: 'Military Intelligence Company' },
-            { id: 'CEC', name: 'Combat Engineer Co.', type: 'engineer' },
-            { id: 'CEC', name: 'Combat Engineer Co.', type: 'engineer' },
-            { id: 'FSC', name: 'Forward Support Co.', color: '#ff8000' },
-          ],
+          unit: new EngineerBattalion({
+            id: "BEB",
+            name: "Brigade Engineer Battalion",
+          }),
+          count: 1,
         },
         {
-          id: 'IB',
-          name: 'Infantry Battalion',
-          type: 'infantry',
-          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
-          subordinates: [
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'WC', name: 'Weapons Company', type: 'infantry' },
-            { id: 'FSC', name: 'Forward Support Co.', color: '#ff8000' },
-          ],
+          unit: new InfantryBattalion({
+            id: "IB1",
+            name: "Infantry Battalion",
+          }),
+          count: 3,
         },
         {
-          id: 'IB',
-          name: 'Infantry Battalion',
-          type: 'infantry',
-          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
-          subordinates: [
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'WC', name: 'Weapons Company', type: 'infantry' },
-            { id: 'FSC', name: 'Forward Support Co.', color: '#ff8000' },
-          ],
+          unit: new CavalrySquadron({
+            id: "CS",
+            name: "Cavalry Squadron",
+          }),
+          count: 1,
         },
         {
-          id: 'IB',
-          name: 'Infantry Battalion',
-          type: 'infantry',
-          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
-          subordinates: [
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'RC', name: 'Rifle Company', type: 'infantry' },
-            { id: 'WC', name: 'Weapons Company', type: 'infantry' },
-            { id: 'FSC', name: 'Forward Support Co.', color: '#ff8000' },
-          ],
+          unit: new ArtilleryBattalion({
+            id: "FB",
+            name: "Fires Battalion",
+          }),
+          count: 1,
         },
         {
-          id: 'CS',
-          name: 'Cavalry Squadron',
-          color: '#ffff00',
-          type: 'recon',
-          commander: { id: 'HHC', name: 'Headquarters & Headquarters Troop.' },
-          subordinates: [
-            { id: 'MCT', name: 'Motorized Cavalry Troop', type: 'recon' },
-            { id: 'MCT', name: 'Motorized Cavalry Troop', type: 'recon' },
-            { id: 'MCT', name: 'Dismounted Cavalry Troop', type: 'recon' },
-            { id: 'MCT', name: 'Forward Support Co.', color: '#ff8000' },
-          ],
-        },
-        {
-          id: 'FB',
-          name: 'Fires Battalion',
-          color: '#ff0000',
-          type: 'artillery',
-          commander: { id: 'HHC', name: 'Headquarters & Headquarters Battery' },
-          subordinates: [
-            { id: 'FB', name: 'Fires Battery', type: 'artillery' },
-            { id: 'FB', name: 'Fires Battery', type: 'mortar' },
-            { id: 'FB', name: 'Fires Battery', type: 'mortar' },
-            { id: 'FB', name: 'Target Acquisition Platoon', type: 'radar' },
-            { id: 'FB', name: 'Forward Support Co.', color: '#ff8000' },
-          ],
-        },
-        {
-          id: 'BSB',
-          name: 'Brigade Support Battalion',
-          color: '#ff8000',
-          type: 'hq',
-          commander: { id: 'HHC', name: 'Headquarters & Headquarters Co.' },
-          subordinates: [
-            { id: 'DC', name: 'Distribution Company', type: 'logistic' },
-            {
-              id: 'FMC',
-              name: 'Field Maintenance Company',
-              type: 'maintenance',
-            },
-            { id: 'MC', name: 'Medical Company', type: 'medical' },
-          ],
+          unit: new SupportBattalion({
+            id: "BSB",
+            name: "Brigade Support Battalion",
+          }),
+          count: 1,
         },
       ],
-    },
-    {
-      id: 'HBCT',
-      name: 'Heavy Brigade Combat Team',
-      color: '#00ffff',
-      type: 'mechanized_infantry',
-      commander: {
-        id: 'HHC',
-        name: 'Headquarters & Headquarters Co.',
-        color: '#ffffff',
-      },
+    }),
+    new Brigade({
+      id: "HBCT",
+      name: "Heavy Brigade Combat Team",
+      type: "mechanized_infantry",
       subordinates: [],
-    },
-    {
-      id: 'BCT',
-      name: 'Brigade Combat Team',
-      color: '#00ffff',
-      type: 'aviation',
-      commander: {
-        id: 'HHC',
-        name: 'Headquarters & Headquarters Co.',
-        color: '#ffffff',
-      },
+    }),
+    new Brigade({
+      id: "BCT",
+      name: "Brigade Combat Team",
+      type: "aviation",
       subordinates: [],
-    },
+    }),
   ],
-}
+};
 
 const CSAT: Unit = {
-  id: 'CSAT',
-  name: 'CSAT',
-  color: '#700000',
+  id: "CSAT",
+  name: "CSAT",
+  color: "#700000",
   subordinates: [],
-}
+};
 
 const AAF: Unit = {
-  id: 'AAF',
-  name: 'AAF',
-  color: '#00a731',
+  id: "AAF",
+  name: "AAF",
+  color: "#00a731",
   subordinates: [],
-}
+};
 
 export const ARMIES: Record<ArmyType, Unit> = {
   nato: NATO,
   csat: CSAT,
   aaf: AAF,
-}
+};
 
 export type UnitType =
-  | 'hq'
-  | 'aviation'
-  | 'armored'
-  | 'artillery'
-  | 'combat_logistic'
-  | 'communication'
-  | 'engineer'
-  | 'infantry'
-  | 'logistic'
-  | 'maintenance'
-  | 'mechanized_infantry'
-  | 'medical'
-  | 'mortar'
-  | 'radar'
-  | 'recon'
+  | "hq"
+  | "aviation"
+  | "armored"
+  | "artillery"
+  | "combat_logistic"
+  | "communication"
+  | "engineer"
+  | "infantry"
+  | "logistic"
+  | "maintenance"
+  | "mechanized_infantry"
+  | "medical"
+  | "mortar"
+  | "radar"
+  | "recon"
+  | "weapon";
 
-interface AbstractEntity {
-  id: string
-}
+export type ArmyType = "nato" | "csat" | "aaf";
 
-export interface Unit extends AbstractEntity {
-  name: string
-  color?: string
-  type?: UnitType
-  commander?: Unit
-  subordinates?: Unit[]
-}
-
-export type ArmyType = 'nato' | 'csat' | 'aaf'
+export type NatoAlphabet =
+  | "Alpha"
+  | "Bravo"
+  | "Charlie"
+  | "Delta"
+  | "Echo"
+  | "Foxtrot"
+  | "Golf"
+  | "Hotel"
+  | "India"
+  | "Juliett"
+  | "Kilo"
+  | "Lima"
+  | "Mike"
+  | "November"
+  | "Oscar"
+  | "Papa"
+  | "Quebec"
+  | "Romeo"
+  | "Sierra"
+  | "Tango"
+  | "Uniform"
+  | "Victor"
+  | "Whisky"
+  | "Xray"
+  | "Yankee"
+  | "Zulu";
